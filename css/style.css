@@ -1,0 +1,140 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*全局样式*/
+*{ margin:0; padding:0; } 
+body{margin:0px; padding:0px; min-width:960px;}
+/*初始化*/
+div,h1,h2,h3,h4,p,img,dl,dt,dd{margin:0px; padding:0px; border:0px; list-style:none; font-family:"微软雅黑","宋体"; color:#595757; }
+ul,li,ol{ list-style:none;margin:0; padding:0;}
+img{ border:none;}
+a{text-decoration:none;}
+/*head*/
+#header{width:100%; height:66px;  }
+.head{width:960px; margin:0px auto; overflow:hidden;}
+.head h1{width:163px; height:66px; float:left;}
+.head_content{width:637px;height:66px;float:left;font-size:14px; font-weight:bold; }
+.head_content{width:637px;height:66px; line-height:66px;}
+.head_content ul li{float:left;margin-left:24px;}
+.head_content ul li a{ padding-bottom:5px; color:#595757;}
+.head_content ul li a:hover{color:#1C8CB3; border-bottom:#1C8CB3 solid 2px; }
+.current{color:#1C8CB3 !important; border-bottom:#1C8CB3 solid 2px; }
+
+
+/*尾部*/
+#foot{width:100%; height:20px;overflow:hidden; background-color:#383635; text-align:center; }
+#foot p{color:#FFF!important;font-size:12px; height:25px;  }
+#foot a{color:#FFF!important;font-size:14px;  margin:0 5px;}
+#foot a:hover{color:#A1A0A0 !important; }
+.foot_link { line-height:20px; margin-top:15px; margin-bottom:10px;}
+
+
+#login{width:100%; }
+
+.main{
+    width:500px;
+    margin:0px auto;
+
+}
+.user {
+    text-align: center;
+
+}
+
+.inset {
+
+    background: #fff;
+    margin-bottom: 20px;
+    margin-top: 2;
+}
+form span {
+    display: block;
+    font-size: 1em;
+    color: #787878;
+    padding-bottom: 5px;
+    font-weight: 600;
+    font-family: 'Open Sans', '微软雅黑';
+}
+input[type="text"],input[type="Password"] {
+    padding: 9px;
+    width: 90%;
+    font-size: 1.1em;
+    margin: 18px 0px;
+    border: 2px solid#EAEEF1;
+    color: #666666;
+    background:#EAEEF1;
+    font-family: 'Open Sans', sans-serif;
+    font-weight:600;
+    margin-left: 5px;
+    outline:none;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+input[type="text"]:hover,input[type="Password"]:hover,#active{
+    background:#fff;
+    border:2px solid #609EC3;
+    outline:none;
+}
+.sign {
+    padding: 10px 0;
+}
+.forget-pass {
+    float: right;
+}
+.submit {
+    padding: 2px 2px;
+    float:left;
+    margin-right: 11px;
+}
+.submit input[type="button"] {
+    background: #F06B37;
+    border: none;
+    outline: none;
+    padding: 0.55em 1.3em 0.6em;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    color: #FFF;
+    font-size: 0.9em;
+    border-radius: 1.3em;
+    -webkit-border-radius: 1.3em;
+    -moz-border-radius: 1.3em;
+    -o-border-radius: 1.3em;
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    font-weight: 600;
+}
+.submit input[type="button"]:hover{
+    background:#62A0C4;
+}
+
+.forget{
+    float:right;
+}
+.forget-pass a {
+    float: right;
+    color:#898888;
+    font-size: 0.95em;
+    margin-top: 13px;
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+}
+.forget-pass a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+

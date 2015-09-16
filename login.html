@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<meta name="description" content="">
+<meta name="author" content="">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default ">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" style="padding: 0; height:47px;">
+                <img alt="Brand" src="images/logo.png">
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse">
+            <ul class="nav  navbar-nav">
+                @navContent
+            </ul>
+
+            @userMessage
+            @login
+        </div>
+    </div>
+</nav>
+
+<div class="row ">
+    <div class="col-lg-12 text-center" ><h2>登录</h2> </div>
+</div>
+
+<div class="row">
+    <form class="form-horizontal" action="/ajax" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="loginName" class="col-lg-offset-4 col-lg-2 control-label">登录名称：</label>
+            <div class="col-lg-2">
+                <input type="text" class="form-control" id="loginName"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="loginPwd" class="col-lg-offset-4 col-lg-2 control-label">登录密码：</label>
+            <div class="col-lg-2">
+                <input type="password" class="form-control" id="loginPwd"/>
+            </div>
+
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+            <div class="col-sm-offset-6 col-sm-2">
+                <button type="button" class="btn btn-success"  style="margin-left: 80px;" onclick="login()">登录</button>
+                <a href="reg.html" style="margin-left:15px;">注册></a>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+<div class="row ">
+    <div class="col-lg-12 text-center" style="background-color: #ebebeb">博客 Design by DanceSmile 蜀ICP备11002373号-1 </div>
+</div>
+
+</body>
+
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script>
+    function login()
+    {
+        var name=document.getElementById('loginName').value;
+        var pwd=document.getElementById('loginPwd').value;
+        var xhr=new XMLHttpRequest();
+        xhr.open('get','/ajax?action=login&loginName='+name+'&loginPwd='+pwd,true);
+        xhr.onreadystatechange=function()
+        {
+
+            if(xhr.readyState==4 && xhr.status==200)
+            {
+                if(xhr.responseText=="ok")
+                {
+                    window.location.href='list.html';
+                }
+                else
+                {
+                    alert("帐号或密码输入错误！请重试");
+                    var name=document.getElementById('loginName').value="";
+                    var pwd=document.getElementById('loginPwd').value="";
+                }
+            }
+        }
+        xhr.send();
+    }
+</script>
+</html>
