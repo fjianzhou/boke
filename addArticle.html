@@ -22,23 +22,13 @@
 
         <div class="collapse navbar-collapse">
             <ul class="nav  navbar-nav">
-                <li class="active" ><a  href="#">首页</a></li>
-                <li ><a href="#">文章发布</a></li>
-                <li ><a href="#">文章列表</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">安全退出</a></li>
-                    </ul>
-                </li>
+
+                <li ><a href="/list.html">文章列表</a></li>
+                <li class="active" ><a href="#">文章发布</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <button type="button" class="btn btn-default navbar-btn">登录</button>
-                <button type="button" class="btn btn-primary navbar-btn">注册</button>
-            </ul>
+            @userMessage
+            @login
         </div>
     </div>
 </nav>
