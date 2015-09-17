@@ -7,7 +7,7 @@ var formidable=require('formidable');
 var mime=require('mime');
 var cookieParser = require('./cookieParser');
 var currentUser={}; //系统中存储session数据的地方
-var EXPIRE_TIME=5*1000;  //过期时间是5秒  根据个人需求调整
+var EXPIRE_TIME=60*1000;  //过期时间是5秒  根据个人需求调整
 var key='boke';
 
 
@@ -31,7 +31,8 @@ server.on('request',function(req,res){
     var sessionObj = currentUser[sessionId];//通过sessionId得到session中的值
 
     //处理请求根目录和login.html 的请求
-    if(pathName=='/' || pathName=='/login.html'){
+    if(pathName=='/' || pathName=='/login.html')
+    {
         res.setHeader('Content-Type',mime.lookup('login.html'));
         var htmltem='<ul class="nav navbar-nav navbar-right">';
         htmltem+='<button type="button" class="btn btn-default navbar-btn" onclick="{window.location.href=\'login.html\'}">登录</button>'
@@ -119,6 +120,27 @@ server.on('request',function(req,res){
             return res.end() ;
 
         }
+        //文章发表
+        else if(queryPar.action=='add')
+        {
+            //解析from表单中的内容
+            submitform.parse(req,function(err,fields,files){
+                var fileName=new Date().getTime()+'_'+Math.random();
+                fs.writeFile('./file/'+fileName+'.txt',fields.title+';'+fields.content,'utf8',function(err){
+                    if(err)  //发表失败
+                    {
+                        res.statusCode=302;
+                        return res.end('文字发表失败！');
+                    }
+                    else //发表成功后跳转到list.html
+                    {
+                        res.statusCode=302;
+                        res.setHeader("Location",'list.html');
+                        return res.end();
+                    }
+                })
+            });
+        }
         else
         {
 
@@ -148,6 +170,8 @@ server.on('request',function(req,res){
             //判断用户信息是否存在   是否有过期时间   过期时间是否过期（也就是判断session是否过期）
             if(sessionObj && sessionObj.expTime && sessionObj.expTime.getTime()>now )
             {
+
+
                 var htmltem='<ul class="nav navbar-nav navbar-right">';
                 htmltem+= '<li class="dropdown">';
                 htmltem+='<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">';
@@ -161,6 +185,28 @@ server.on('request',function(req,res){
                 htmltem+='<li ><a href=\'addArticle.html\'>文章发布</a></li>';
                 htmlstr= htmlstr.replace("@navContent",htmltem);
                 htmlstr=htmlstr.replace("@login","");
+                //如果是文章列表 要将文章列表展示出来
+                if(pathName=='/list.html')
+                {
+                    htmltem="";
+                    //读取文章
+                    var files=fs.readdirSync('./file');
+                    //循环显示文章列表
+                    for(var i=files.length-1;i>=0;i--)
+                    {
+                        var data=fs.readFileSync('./file/'+files[i],'utf-8');
+
+                        var contents=data.split(';')
+                        htmltem+='<a href="#" class="list-group-item ">'+contents[0]+'</a>'
+                    }
+                    //files.forEach(function(item)
+                    //{
+                    //
+                    //});
+                    htmlstr=htmlstr.replace("@Listcontent",htmltem);
+                }
+
+
                 //用户请求一次就应该把session过期时间重新设定一下
                 if(sessionObj){
                     //当前时间加设定好的最大过期时间EXPIRE_TIME
