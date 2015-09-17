@@ -7,7 +7,7 @@ var formidable=require('formidable');
 var mime=require('mime');
 var cookieParser = require('./cookieParser');
 var currentUser={}; //系统中存储session数据的地方
-var EXPIRE_TIME=60*1000;  //过期时间是5秒  根据个人需求调整
+var EXPIRE_TIME=5*1000;  //过期时间是5秒  根据个人需求调整
 var key='boke';
 
 
@@ -78,29 +78,42 @@ server.on('request',function(req,res){
                 //;user=wwww&pwd=2222&avatar=secondarytile.png;user=qweqwe&pwd=2222&avatar=secondarytile.pn
                 //把用户信息按;号分格 并去掉第一个空用户
                 var usersStr=userTemStr.split(';').slice(1);
+                //是否登录成功
+                var flag=false;
                 //循环所有用户。。看看有没有和前台输入一直的用户名和密码  如果有登录成功。。
-                usersStr.forEach(function (item) {
+                for(var i=0;i<usersStr.length;i++)
+                {
                     //将用户数据转换成JSON
-                    item=querystring.parse(item);
+                    var item=querystring.parse(usersStr[i]);
                     //console.log('item.user='+item.user+" loginName "+queryPar.loginName+"  tem.pwd"+item.pwd+"  loginPwd"+queryPar.loginPwd)
-                    //判断用户是否存在
+                    //判断用户是否存在 存在的话将flag设置为true并跳出循环
                     if(item.user==queryPar.loginName && item.pwd==queryPar.loginPwd)
                     {
-                        //防止同一用户多次登录 session中会保存多个用户信息
-                        delete currentUser[sessionId];  //删除多余用户信息
+                        flag=true;
+                        break;
+                    }
+                    else
+                    {
+                        flag=false;
+                    }
+                }
+                if(flag){
+                    //防止同一用户多次登录 session中会保存多个用户信息
+                    delete currentUser[sessionId];  //删除多余用户信息
 
-                        item.expTime=new Date(new  Date().getTime()+EXPIRE_TIME);//session的过期时间
-                        var sessionObj=item; //的用户信息
-                        sessionId=now+'_'+Math.random(); //生成一个随机唯一的sessionId值
-                        currentUser[sessionId]=sessionObj;//用户保存到session中
-                        //将sessionId 传给客户段的cookie中
-                        res.writeHead(200,{"Set-Cookie":cookieParser.serialize(key,sessionId,{maxAge:30*60})});
-                        res.end('ok'); //ok表示登录成功 （调用login.html js方法login（））
-                    }
-                    else{
-                        res.end('no');//no表示登录不成功
-                    }
-                });
+                    item.expTime=new Date(new  Date().getTime()+EXPIRE_TIME);//session的过期时间
+                    var sessionObj=item; //的用户信息
+                    sessionId=now+'_'+Math.random(); //生成一个随机唯一的sessionId值
+                    currentUser[sessionId]=sessionObj;//用户保存到session中
+                    //将sessionId 传给客户段的cookie中
+                    res.writeHead(200,{"Set-Cookie":cookieParser.serialize(key,sessionId,{maxAge:30*60})});
+                    res.end('ok'); //ok表示登录成功 （调用login.html js方法login（））
+                }
+                else
+                {
+                    res.end('no');
+                }
+
             }
             else{
                 res.end('no');//no表示登录不成功
@@ -164,6 +177,7 @@ server.on('request',function(req,res){
             //不是html文件直接读取并返回给客户端 如果是html文件要进行拼装把内容替换一下
             if(path.extname(pathName)!='.html')
             {
+
                 return res.end( fs.readFileSync('.'+pathName));
             }
 
@@ -175,7 +189,14 @@ server.on('request',function(req,res){
                 var htmltem='<ul class="nav navbar-nav navbar-right">';
                 htmltem+= '<li class="dropdown">';
                 htmltem+='<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">';
-                htmltem+='<img src="/upload/'+sessionObj.avatar+'" style=" width: 20px; height: 20px; " />';
+                if(sessionObj.avatar){
+                    htmltem+='<img src="/upload/'+sessionObj.avatar+'" style=" width: 20px; height: 20px; " />';
+                }
+                else
+                {
+                    htmltem+='<img src="/images/user.png" style=" width: 20px; height: 20px; " />';
+                }
+
                 htmltem+='<span class="caret"></span></a>';
                 htmltem+='<ul class="dropdown-menu">';
                 htmltem+='<li><a href="/ajax?action=exit">安全退出</a></li></ul></li></ul>';
